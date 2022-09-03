@@ -1,0 +1,33 @@
+#execute a command at 3AM
+0 3 * * * daily-backup
+#
+#execute a command every Sunday at 4:15
+15 4 * * sun weekly-backup
+#
+#perform software updates
+0 2 01 9 thu software-update
+#
+#submit project 
+59 16 16 8 * submit-project
+#
+#monthly emails 
+0 2 1 * * monthly-mail
+#
+#update apps automatically weekly on Saturday
+59 1 * * sat update-apps
+#
+#restart computer every day at 1AM
+0 1 * * * restart
+#
+#post happy birthday on facebook on Sept 5
+0 0 5 9 mon post-hpbd
+#
+#alarms at 7AM every day
+0 7 * * * alarms
+#
+#clear cache every Monday at 5AM
+0 5 * * mon clear-cache
+#
+#class reminder every Thursday at 12PM
+0 12 * * thu class-reminder
+

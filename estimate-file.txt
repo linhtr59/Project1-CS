@@ -1,0 +1,13 @@
+#command name  : minutes
+weekly-backup 6
+daily-backup 2
+software-update 30
+monthly-mail 10
+submit-project 1
+update-apps 1
+restart 5
+post-hpbd 1
+alarms 5
+clear-cache 10
+class-reminder 2
+
