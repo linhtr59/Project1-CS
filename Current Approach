@@ -1,0 +1,48 @@
+Current approach
+
+From original files, convert all inputs into integer -DONE (via month to int and day to int functions)
+Storing the data from crontab and estimate file into structures
+
+openFile:    -DONE
+takes parameter file and open the file. 
+Report errors such as file not found
+
+
+maxDaysInmonth:  - DONE
+using switch case syntax to determine maximum days in the month
+
+monthToInt:  -DONE
+takes a parameter month and if it is already an interger, return that. Else:
+Have array months of all possible month shorthands (jan.. dec) if the month string match, return the corresponding integer
+If encoutered errors (month isnt in specified arrays or month > 11: EXIT with errors)
+
+dayToInt:   -DONE
+takes a parameter day and if it is already an interger, return that. Else:
+Have array days of all possible days shorthands (mon.. tues) if the month string match, return the corresponding integer
+If encoutered errors (day isnt in specified arrays or day> 6: EXIT with errors)
+
+
+void estimatecron function breakdown:
+using fgets to read lines, ignore comments and store data after processing (ignore white space and convert all to int)
+into struct (unsure how to intialize struct as of now)
+before storing into struct - account for potential errors: 
+    
+
+have a couple of variables to keep track of current progress
+   *pid: process ID;
+   *nrunning: keeps track of number of current commands running 
+   *ninvoked: keeps track of commands invoked
+loop through every minute of a month and determine if a command
+    *start in that minute => increments nrunning and ninvoked
+    *terminates in that minute => decrement nrunning
+    
+    
+main: 
+report error if main did not receive 4 arguments --DONE
+intialised month == arv[1].  ---DONE
+using openFile function, intialised crontab and estimate file (arg[3] arg[4] respectively).  ---DONE
+make a call to void estimatecront to return correct response
+
+
+
+
