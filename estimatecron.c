@@ -99,7 +99,7 @@ int monthToInt(char *month){
 void estimatecron(char *month, FILE *crontab_file, FILE *estimates_file){
     int maxCommand = 0;
     int invokedCommand = 0;
-    char all = "*"; //defining * to be all possible valid value
+    char all[2] = "*"; //defining * to be all possible valid value
 
     struct Cron{
         char min[2];
@@ -124,10 +124,10 @@ void estimatecron(char *month, FILE *crontab_file, FILE *estimates_file){
         int minute = 0;
 
         int i = 0;
-        if(line[0]=="#"){ //if line is comment line, continue to next line
+        if(line[0]=='#'){ //if line is comment line, continue to next line
             continue;
         }
-        else if(isspace(line[i])){//if the character is space, increment i
+        else if(line[i]==' '){//if the character is space, increment i
             i++;
         }     
     }
@@ -145,5 +145,7 @@ int main(int argc, char *argv[]){
     FILE *estimate = openfile(argv[3]);
     estimatecron(month, crontab, estimate);
 }
+
+
 
 
