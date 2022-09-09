@@ -43,7 +43,9 @@ FILE *openfile(char filename[]) {
 }
 
 
-int fileProcessCron(FILE *crontab, struct Crontab crontab_data[MAX_LEN]){
+
+
+void fileProcessCron(FILE *crontab, struct Crontab crontab_data[MAX_LEN]){
     int line = 0;//keeps track of every line in file and also act as pointer for struct idex
     int j = 0; //keeps track of the individual character in a line
 
@@ -70,7 +72,7 @@ int fileProcessCron(FILE *crontab, struct Crontab crontab_data[MAX_LEN]){
             strcpy(crontab_data[line].day, cday);
             strcpy(crontab_data[line].month, cmonth);
             strcpy(crontab_data[line].date, cdate);
-            strcpy(crontab_data[line].minute, cmd);
+            strcpy(crontab_data[line].command, cmd);
             line++;
         }
 
@@ -79,7 +81,9 @@ int fileProcessCron(FILE *crontab, struct Crontab crontab_data[MAX_LEN]){
 }
 
 
-int fileProcessEstimate(struct Estimate est_data[MAX_LEN], FILE *estimate){
+
+
+void fileProcessEstimate(struct Estimate est_data[MAX_LEN], FILE *estimate){
     int line = 0;//keeps track of every line in file and act as pointer for struct index
     int j = 0; //keeps track of the individual character in a line
 
@@ -104,6 +108,8 @@ int fileProcessEstimate(struct Estimate est_data[MAX_LEN], FILE *estimate){
     }
 
 }
+
+
 
 
 
@@ -139,7 +145,7 @@ int daysOfMonth(int month){
 
 
 
-****** NEEDS TO ADD FUNCTION THAT IF IT DOESNT MATCH ANYTHING IN DAYS ARRAY THEN RETURN -1 
+
 int dayToInt(char *day){
     //if given a string (mon-sun) convert that to a number
     int num; 
@@ -161,7 +167,8 @@ int dayToInt(char *day){
 
 
 
-****** NEEDS TO ADD FUNCTION THAT IF IT DOESNT MATCH ANYTHING IN DAYS MONTH THEN RETURN -1 
+
+
 int monthToInt(char *month){
     //if given a string (jan-dec) convert that to a number
     int num; 
@@ -181,6 +188,9 @@ int monthToInt(char *month){
     return num;
 
 }
+   
+
+
 
 int validDay(int month, int day){
     int maxDay = daysOfMonth(month);
@@ -195,8 +205,10 @@ int validDay(int month, int day){
 
 
 
-void reportError(struct Crontab crontab_data[MAX_LEN], struct Estimate est_data[MAX_LEN]){
 
+
+void reportError(struct Crontab crontab_data[MAX_LEN]){
+//GETTING SOME WARNINGS HERE WITH COMPARING ANY TO THE DATA BUT MAYBE ITS FINE??? ALSO SIZEOF IS SOMEHTIMES INACCURATE, ASKED Q ON HELP FORUM, WILL GET BACK TO FIX THIS
     for (int i =0; i < sizeof crontab_data; i ++ ){
         //reporting errors on minute in crontab,  
         if (strcmp(crontab_data[i].minute, ANY)!= 0 ){//if minute is not * -->
@@ -259,7 +271,6 @@ void reportError(struct Crontab crontab_data[MAX_LEN], struct Estimate est_data[
         }
     }
 
-
 // we will need to work on dayToInt and monthToInt in order to return negative number if the string provided doesnt match with any acceptable month/day
 }
 
@@ -267,12 +278,35 @@ void reportError(struct Crontab crontab_data[MAX_LEN], struct Estimate est_data[
 void estimatecron(char *month, FILE *crontab_file, FILE *estimates_file){
     int maxCommand = 0;
     int invokedCommand = 0;
-    char all = '*'; //defining * to be all possible valid value
+    int nrunning = 0; //keeps track of no of process running at a given minute 
+    int cmdMonth = monthToInt(month);
 
+    struct Crontab crontab_data[MAX_LEN];
+    struct Estimate est_data[MAX_LEN];
+    
 
-    char crontabData[MAX_LEN][MAX_CHAR];
-    char estimateData[MAX_LEN][MAX_CHAR];
-    int i = 0; //use to keep track of character in a line 
+    struct Process{
+        char command[40];
+        int time;
+    }process[MAX_LEN];
+
+    fileProcessEstimate(est_data, estimates_file);
+    fileProcessCron(crontab_data, crontab_file);
+    reportError(crontab_data);
+
+    //iterate through every minute in the provided and month and log commands 
+    int minInMonth = (60*24) * daysOfMonth(cmdMonth); //no of minutes in the given month
+    for (int min = 0; min <= minInMonth; min++){
+        for (int i =0; i < sizeof crontab_data; i++){
+// iterate through crontab lines and if the day & month and date and hour and min match approrpiately then do something
+// *** needs to somehow be able to determine if a process start in this minute then incremen nrunning if a process terminate then decrement nrunning         
+   *** at any one point nrunning become greater than maxCommand, update maxCommand
+   *** also need too somehow keep track of the most frequently invoked commands 
+   
+        }
+
+    }
+
 
 
 }
