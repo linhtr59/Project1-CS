@@ -10,6 +10,7 @@
 
 #define MAX_LEN 20
 #define MAX_CHAR 100
+#define ANY '*'
 
 
 struct Crontab{
@@ -130,28 +131,10 @@ int daysOfMonth(int month){
             days = 28;
             break;
         default:
-            printf("%i is an invalid input", month);
+            fprintf(stderr,"%i is an invalid input", month);
             exit(EXIT_FAILURE);
     }
     return days;
-}
-
-int validDay(int month, int day){
-    int maxDay = daysOfMonth(month);
-    if (day>=0 && day <= maxDay){
-        return 0;
-    }
-    else{
-        printf("Invalid day provided for the month");
-        exit(EXIT_FAILURE);
-    }
-}
-
-
-
-void reportError(struct Crontab crontab_data[MAX_LEN], struct Estimate est_data[MAX_LEN]){
-    int i = 0; // pointer to keep track of each command line in the structure
-
 }
 
 
@@ -195,6 +178,88 @@ int monthToInt(char *month){
     return num;
 
 }
+
+int validDay(int month, int day){
+    int maxDay = daysOfMonth(month);
+    if (day>=0 && day <= maxDay){
+        return 0;
+    }
+    else{
+        fprintf(stderr,"Invalid day provided for the month");
+        exit(EXIT_FAILURE);
+    }
+}
+
+
+
+void reportError(struct Crontab crontab_data[MAX_LEN], struct Estimate est_data[MAX_LEN]){
+
+    for (int i =0; i < sizeof crontab_data; i ++ ){
+        //reporting errors on minute in crontab,  
+        if (strcmp(crontab_data[i].minute, ANY)!= 0 ){//if minute is not * -->
+            if(atoi(crontab_data[i].minute) < 0 || atoi(crontab_data[i].minute) > 59){//check if its < 0 or > 59, if yes report error and exit 
+                fprintf(stderr,"Minute provided is out of scope");
+                exit(EXIT_FAILURE);
+            }
+        }
+
+
+        //reporting errors on hour in crontab
+        if (strcmp(crontab_data[i].hour, ANY)!= 0 ){//if hour is not * -->
+            if(atoi(crontab_data[i].hour) < 0 || atoi(crontab_data[i].hour) > 23){//check if its <0 or > 23, if yes report error and exit
+                fprintf(stderr,"Hour provided is out of scope");
+                exit(EXIT_FAILURE);
+            }
+        }
+
+
+        //reporting errors on date in crontab
+        if (strcmp(crontab_data[i].date, ANY) !=0){ //if date is not * -->
+
+            if(strcmp(crontab_data[i].month, ANY) ==0){ // if month is equals to * report generic error
+                if (atoi(crontab_data[i].date) < 0 || atoi(crontab_data[i].date > 31)){ // date < 0 or date > 31 then exit and report error
+                    fprintf(stderr,"Date provided is out of scope");
+                    exit(EXIT_FAILURE);
+
+                }
+            }
+            else if (strcmp(crontab_data[i].month, ANY) !=0){ // and if the month provided is also not * -->
+                int currentMonth = monthToInt(crontab_data[i].month);
+                int currentDate = dayToInt(crontab_data[i].date);
+                //report error accordingly to the specified month
+                if (currentDate < 0 || (validDay != 0)){ // if the date provided is < 0 or is larger than the max date for the provide month, report error and exit 
+                    fprintf(stderr,"Date provided is out of scope");
+                    exit(EXIT_FAILURE);
+                }     
+            }
+        }
+
+
+
+        //reporting errors on month in crontab
+        if (strcmp(crontab_data[i].month, ANY) !=0){ // if day is not * --> 
+            int currentMonth = monthToInt(crontab_data[i].month);
+            if (currentMonth < 0 || currentMonth > 11){ // if month is < 0 or > 11, report error and exit 
+                fprintf(stderr,"Month provided is out of scope");
+                exit(EXIT_FAILURE);
+            }
+        }
+
+
+        //reporting erros on day in crontab
+        if(strcmp(crontab_data[i].day, ANY) !=0){ //if dayis not * -->
+            int currentDay = dayToInt(crontab_data[i].month);
+            if (currentDay < 0 || currentDay > 6){ // if day is < 0 or > 6, report error and exit 
+                fprintf(stderr,"Day provided is out of scope");
+                exit(EXIT_FAILURE);
+            }
+        }
+    }
+
+
+// we will need to work on dayToInt and monthToInt in order to return negative number if the string provided doesnt match with any acceptable month/day
+}
+
 
 void estimatecron(char *month, FILE *crontab_file, FILE *estimates_file){
     int maxCommand = 0;
