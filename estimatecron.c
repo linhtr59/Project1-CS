@@ -107,7 +107,6 @@ int fileProcessEstimate(struct Estimate est_data[MAX_LEN], FILE *estimate){
 
 
 
-
 int daysOfMonth(int month){
     // returns max number of days in month;
     int days;
@@ -140,6 +139,7 @@ int daysOfMonth(int month){
 
 
 
+****** NEEDS TO ADD FUNCTION THAT IF IT DOESNT MATCH ANYTHING IN DAYS ARRAY THEN RETURN -1 
 int dayToInt(char *day){
     //if given a string (mon-sun) convert that to a number
     int num; 
@@ -159,6 +159,9 @@ int dayToInt(char *day){
     return num;
 }
 
+
+
+****** NEEDS TO ADD FUNCTION THAT IF IT DOESNT MATCH ANYTHING IN DAYS MONTH THEN RETURN -1 
 int monthToInt(char *month){
     //if given a string (jan-dec) convert that to a number
     int num; 
