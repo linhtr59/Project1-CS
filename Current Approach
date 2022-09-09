@@ -1,25 +1,7 @@
 Current approach
 
 From original files, convert all inputs into integer -DONE (via month to int and day to int functions)
-Storing the data from crontab and estimate file into structures
-
-openFile:    -DONE
-takes parameter file and open the file. 
-Report errors such as file not found
-
-
-maxDaysInmonth:  - DONE
-using switch case syntax to determine maximum days in the month
-
-monthToInt:  -DONE
-takes a parameter month and if it is already an interger, return that. Else:
-Have array months of all possible month shorthands (jan.. dec) if the month string match, return the corresponding integer
-If encoutered errors (month isnt in specified arrays or month > 11: EXIT with errors)
-
-dayToInt:   -DONE
-takes a parameter day and if it is already an interger, return that. Else:
-Have array days of all possible days shorthands (mon.. tues) if the month string match, return the corresponding integer
-If encoutered errors (day isnt in specified arrays or day> 6: EXIT with errors)
+Storing the data from crontab and estimate file into structures - DONE 
 
 
 void estimatecron function breakdown:
@@ -36,13 +18,77 @@ loop through every minute of a month and determine if a command
     *start in that minute => increments nrunning and ninvoked
     *terminates in that minute => decrement nrunning
     
-    
+   
+   
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+openFile:    -DONE
+takes parameter file and open the file. 
+Report errors such as file not found
+
+
+process estimate and process cront   -DONE
+read from crontab and estimate file and 
+ignore and line that start with # as its first nonewhite space
+store data processed into struct cron_data and est_data
+
+
+maxDaysInmonth:  - DONE
+using switch case syntax to determine maximum days in the month
+
+monthToInt:  -  
+takes a parameter month and if it is already an interger, return that. Else:
+Have array months of all possible month shorthands (jan.. dec) if the month string match, return the corresponding integer
+If encoutered errors (month isnt in specified arrays or month > 11: EXIT with errors). -- NEEDS TO ADD THIS FUNCTIONALITY
+
+dayToInt:   - 
+takes a parameter day and if it is already an interger, return that. Else:
+Have array days of all possible days shorthands (mon.. tues) if the month string match, return the corresponding integer
+If encoutered errors (day isnt in specified arrays or day> 6: EXIT with errors) -- NEEDS TO ADD THIS FUNCTIONALITY 
+
+
+validDay: --DONE
+given a month and a day, it will call maxDayOf month and determine the max day and return 0 if day >= 0 and day <= maxday
+
+
+ 
 main: 
 report error if main did not receive 4 arguments --DONE
 intialised month == arv[1].  ---DONE
 using openFile function, intialised crontab and estimate file (arg[3] arg[4] respectively).  ---DONE
 make a call to void estimatecront to return correct response
 
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+reportError function:   -SOMEWHAT DONE NOT TESTED
+loop through each line of crontab and estimate structure and check for the following: 
+
+
+  -- for minute: 
+     if minute is not equal to '*' and is smaller than 0 or greater than 59 then exit failutre and print error 
+     (if strcmp(crontab.min) != -- > if < 0 or > 59)
+  
+  
+  -- for hour: 
+     if hour is not equal to '*' and is smaller than 0 or greater than 23 then exit failutre and print error 
+     (if strcmp(crontab.min) != -- > if < 0 or > 23)
+     
+  -- for day: 
+     if day is not equal to '*' then we have two situation, either the month is * or the month is specified
+     in case month is *, report errors if day is < 0 or > 13 using just atoi 
+     in case month is not *, use two variables to keep track of month and day as integer then:
+     report error if day is < 0 or day is > max day in that month using validDay function
+     
+     
+  -- for month: 
+     if month is not equal to '*' then report error if month is < 0 or >11
+  
+  
+  -- for day:
+     if day is not euqal to '*' then report error if day is < 0 or > 11
+     
+--------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
