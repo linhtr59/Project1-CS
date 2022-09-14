@@ -471,12 +471,23 @@ void estimatecron(char *month, FILE *crontab_file, FILE *estimates_file)
 
                 for (int j = 0; j < estSize; j++)
                 {
+                    bool foundProcess = false;
                     if (strcmp(est_data[j].command, crontab_data[i].command) == 0) // finding the command that just started and add its execution time to process array
                     {
-                        int minRunning = toInteger(est_data[j].min);
-                        strcpy(process[processPointer].name, crontab_data[i].command);
-                        process[processPointer].finishTime = minRunning;
-                        processPointer++;
+                        for (int m=0; m < MAX_COMMANDS; m++){
+                            if (strcmp(process[m].name, crontab_data[i].command)==0){
+                                int minRunning = toInteger(est_data[j].min);
+                                process[m].finishTime = minRunning;
+                                foundProcess = true;
+                            }
+                        }
+                        if(!foundProcess){
+                            int minRunning = toInteger(est_data[j].min);
+                            strcpy(process[processPointer].name, crontab_data[i].command);
+                            process[processPointer].finishTime = minRunning;
+                            processPointer++;
+
+                        } 
                     }
                 }
 
@@ -529,5 +540,3 @@ int main(int argc, char *argv[])
 
     estimatecron(month, crontab, estimate);
 }
-
-
