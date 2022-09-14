@@ -533,10 +533,15 @@ void estimatecron(char *month, FILE *crontab_file, FILE *estimates_file)
 
 int main(int argc, char *argv[])
 {
+    if(argc != 4){
+        fprintf(stderr, "4 arguments required");
+        exit(EXIT_FAILURE);
+    }
 
-    char *month = "9";
-    FILE *crontab = openfile("crontab-file.txt");
-    FILE *estimate = openfile("estimate-file.txt");
+    char *month = argv[1];
+    FILE *crontab = openfile(argv[2]);
+    FILE *estimate = openfile(argv[3]);
 
     estimatecron(month, crontab, estimate);
 }
+
